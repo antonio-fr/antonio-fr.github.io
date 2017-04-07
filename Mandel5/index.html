@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Mandelbrot Render</title>
+<meta name="viewport" content="width=device-width, initial-scale=0.7">
+<LINK rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1>
+Mandel5
+</h1>
+<h2>
+A HTML5 Mandelbrot Set Render
+</h2>
+<h3>
+Click on drawing to zoom in
+</h3>
+X : <input type="text" id="xcoord" value="-0.5"><br>
+Y : <input type="text" id="ycoord" value="0"><br>
+Zoom : <input type="text" id="zm" value="0.333"><button type="button" id="zmback" class="btn">Zoom Out</button><br><p></p>
+<input type="checkbox" id="antialias" class="cbx"/>Antialiasing<input type="checkbox" id="fastrend" class="cbx"/>Fast Render<br>
+<button type="button" id="rst"  class="btn">Reset</button>&nbsp;&nbsp;<button type="button" id="go"  class="btn">DRAW</button>
+<p><div id="status"></div><div id="txttime"></div></p>
+<canvas id="myCanvas" width="512" height="512">
+Your browser does not support the HTML5 canvas tag. Please use latest Chrome, Firefox or Edge software.</canvas>
+<p></p>
+<button type="button" id="saveimg"  class="btn">Save Image</button>
+<SCRIPT type="text/javascript" src="msr.js"></SCRIPT>
+</body>
+</html>
