@@ -2,37 +2,46 @@ var x,y,z;
 var canv = document.getElementById("myCanvas");
 var ctx = canv.getContext("2d");
 var passtart = 5; //16*16
-var BaseLog = 2*Math.log(0.5)/Math.log(2.0);
+var accel = 2.0;
+var colorshift = 0;
+var BaseLog = Math.sqrt(2);
 document.getElementById("go").onclick = draw;
 document.getElementById("rst").onclick = function rst(){
 	document.getElementById('zm').value = 0.333;
 	document.getElementById('xcoord').value = -0.5;
 	document.getElementById('ycoord').value = 0.0;
+	document.getElementById('accel').value = 2;
+	document.getElementById('color').value = 0;
 	draw();
 };
 document.getElementById("urlsave").onclick = function rst(){
 	zmv = parseFloat(document.getElementById('zm').value);
 	xv = parseFloat(document.getElementById('xcoord').value);
 	yv = parseFloat(document.getElementById('ycoord').value);
-	paramsadd = "?x="+xv+"&y="+yv+"&zm="+zmv;
+	acv = parseInt(document.getElementById('accel').value);
+	csv = parseInt(document.getElementById('color').value);
+	paramsadd = "?x="+xv+"&y="+yv+"&zm="+zmv+"&ac="+acv+"&cs="+csv;
 	history.pushState({}, null, window.location.href.split("?")[0]+paramsadd);
 };
 function draw(){
 	z=parseFloat(document.getElementById('zm').value);
 	x=parseFloat(document.getElementById('xcoord').value);
 	y=parseFloat(document.getElementById('ycoord').value);
+	accel = parseInt(document.getElementById('accel').value);
+	colorshift = parseInt(document.getElementById('color').value);
 	ctx.clearRect(0, 0, canv.width, canv.height);
 	t0 = performance.now();
 	setTimeout(render, 0, x,y,z,passtart);
 };
 function renderpix(px,py,ci,cj,sq,ks){
-	for( a=b=aq=bq=0,k=ks; k--&&aq+bq<4;){
+	for( a=b=aq=bq=0,k=ks; k--&&aq+bq<16;){
 		aq = Math.pow(a,2), bq = Math.pow(b,2);
-		c = aq-bq+ci, b = a*b*2+cj, a = c
+		c = aq-bq+ci, b = a*b*2+cj;
+		a = c
 	};
 	if (k<1) ck = 0;
-	else ck = 2.0*k - BaseLog * Math.log(Math.log(aq+bq));
-	ctx.fillStyle = "hsl("+ck+",100%,50%)";
+	else ck = accel*(k + BaseLog * Math.log(Math.log(aq+bq)));
+	ctx.fillStyle = "hsl("+(ck+colorshift)+",100%,50%)";
 	ctx.fillRect(px,py,sq,sq)
 };
 function render(ix,iy,z,n){
@@ -104,6 +113,10 @@ window.onload = function()
 		document.getElementById('zm').value = parseFloat(params["zm"]);
 		document.getElementById('xcoord').value = parseFloat(params["x"]);
 		document.getElementById('ycoord').value = parseFloat(params["y"]);
+		params["ac"] === undefined ?
+			document.getElementById('accel').value = 2 : document.getElementById('accel').value = parseInt(params["ac"]);
+		params["cs"] === undefined ?
+			document.getElementById('color').value = 0 : document.getElementById('color').value = parseInt(params["cs"]);
 	};
 	draw();
 };
